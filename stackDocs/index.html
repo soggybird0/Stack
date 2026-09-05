@@ -1,61 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stack — overflow-safe Luau toolkit</title>
-  <meta name="description" content="Fully typed, overflow-safe execution and IO toolkit for Luau and Roblox. Tasks, signals, buffers, bit32, and ser/des behind one object.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stack</title>
+    <meta name="description" content="Fully typed, overflow-safe execution and IO toolkit for Luau and Roblox. Tasks, signals, buffers, bit32, and ser/des behind one object.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <a class="brand" href="index.html"><span class="mark">S</span>Stack</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="guide.html">Guide</a>
-        <a href="api.html">API</a>
-      </nav>
-    </div>
-  </header>
+    <header class="nav">
+        <div class="wrap nav-inner">
+            <a class="brand" href="index.html"><span class="mark">S</span>Stack</a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="api.html">API</a>
+            </nav>
+        </div>
+    </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <p class="kicker">Luau / Roblox · v1.1.0</p>
-      <h1>A stack that refuses to overflow.</h1>
-      <p class="lede">
-        Fully typed execution and IO toolkit. One object wraps threads, tasks, signals,
-        connections, coroutines, buffers, bit32, and binary ser/des — and bounces work
-        onto a fresh thread before Luau can throw.
-      </p>
-      <div class="actions">
-        <a class="btn btn-primary" href="guide.html">Read the guide</a>
-        <a class="btn btn-ghost" href="api.html">API reference</a>
-      </div>
-    </section>
+    <main class="wrap">
+        <section class="hero">
+            <p class="kicker">Luau / Roblox · v1.0.0</p>
+            <h1>A stack that refuses to overflow.</h1>
+            <p class="lede">
+                Fully typed execution and IO toolkit. One object wraps threads, tasks, signals, connections, coroutines, buffers, bit32, and binary ser/des — and bounces work onto a fresh thread before Luau can throw.
+            </p>
+            <div class="actions">
+                <a class="btn btn-primary" href="guide.html">Read the guide</a>
+                <a class="btn btn-ghost" href="api.html">API reference</a>
+            </div>
+        </section>
 
-    <section class="grid">
-      <article class="card">
-        <div class="tag">Stack.New()</div>
-        <h3>Object per budget</h3>
-        <p>Each stack owns its limit, strategy, and weak per-thread depth table. Gameplay and netcode can run side by side without sharing counters.</p>
-      </article>
-      <article class="card">
-        <div class="tag">:Safe :Recurse :Ensure</div>
-        <h3>Under the VM caps</h3>
-        <p>Luau allows 20,000 Lua frames, 200 C frames, and about 10 defer re-entries. Stack’s default budget is 240, then it resets the stack.</p>
-      </article>
-      <article class="card">
-        <div class="tag">--!strict --!optimize 2</div>
-        <h3>Typed and tight</h3>
-        <p>Localized library calls, recycled signal runners, doubling buffer writers, and a compact tagged payload for Roblox types and cyclic tables.</p>
-      </article>
-    </section>
+        <section class="grid">
+            <article class="card">
+                <div class="tag">Stack.New()</div>
+                <h3>Object per budget</h3>
+                <p>Each stack owns its limit, strategy, and weak per-thread depth table. Gameplay and netcode can run side by side without sharing counters.</p>
+            </article>
+            <article class="card">
+                <div class="tag">:Safe :Recurse :Ensure</div>
+                <h3>Under the VM caps</h3>
+                <p>Luau allows 20,000 Lua frames, 200 C frames, and about 10 defer re-entries. Stack’s default budget is 240, then it resets the stack.</p>
+            </article>
+            <article class="card">
+                <div class="tag">--!strict --!optimize 2</div>
+                <h3>Typed and tight</h3>
+                <p>Localized library calls, recycled signal runners, doubling buffer writers, and a compact tagged payload for Roblox types and cyclic tables.</p>
+            </article>
+        </section>
 
-    <pre><code>local Stack = require(ReplicatedStorage.Stack)
+        <pre><code>local Stack = require(ReplicatedStorage.Stack)
+
 local stack = Stack.New({
     limit = 400,
     strategy = "defer", -- "defer" | "spawn" | "error"
@@ -68,25 +67,40 @@ end)
 local packed = stack:Pack({ hp = 100, pos = Vector3.new(1, 2, 3) })
 local data = stack:Unpack(packed)</code></pre>
 
-    <section class="grid" style="padding-top:28px">
-      <article class="card">
-        <h3>Tasks &amp; threads</h3>
-        <p><code>:Spawn</code> <code>:Defer</code> <code>:Delay</code> <code>:Thread</code> <code>:Resume</code> <code>:Yield</code> <code>:Cancel</code></p>
-      </article>
-      <article class="card">
-        <h3>Signals &amp; bags</h3>
-        <p>Yield-safe linked-list signals plus a tiny connection bag for cleanup.</p>
-      </article>
-      <article class="card">
-        <h3>Buffers, bits, ser/des</h3>
-        <p>Growable writer, bounds-checked reader, bit32 extras, tagged pack/unpack.</p>
-      </article>
-    </section>
-  </main>
+        <!-- NEW: Installation Section for Wally & Creator Store -->
+        <section class="grid" style="padding-top:28px">
+            <article class="card">
+                <div class="tag">wally.toml</div>
+                <h3>Wally Package Manager</h3>
+                <p>Add the dependency to your project file:</p>
+                <pre style="margin: 12px 0 0 0; padding: 10px; background: #1a1a1a;"><code style="font-size: 13px;">Stack = "github/your-repo-name@1.0.0"</code></pre>
+            </article>
+            <article class="card">
+                <div class="tag">Studio Marketplace</div>
+                <h3>Creator Store</h3>
+                <p>Prefer working natively in Roblox Studio? Grab the official model directly from the <a href="#" style="color: var(--brand-color, #ff4757); text-decoration: underline;">Creator Store</a> and drop it into your Services.</p>
+            </article>
+        </section>
 
-  <footer class="foot">
-    <div class="wrap">Stack · GitHub Pages docs · MIT-style drop-in ModuleScript</div>
-  </footer>
-  <script src="assets/site.js"></script>
+        <section class="grid" style="padding-top:28px">
+            <article class="card">
+                <h3>Tasks &amp; threads</h3>
+                <p><code>:Spawn</code> <code>:Defer</code> <code>:Delay</code> <code>:Thread</code> <code>:Resume</code> <code>:Yield</code> <code>:Cancel</code></p>
+            </article>
+            <article class="card">
+                <h3>Signals &amp; bags</h3>
+                <p>Yield-safe linked-list signals plus a tiny connection bag for cleanup.</p>
+            </article>
+            <article class="card">
+                <h3>Buffers, bits, ser/des</h3>
+                <p>Growable writer, bounds-checked reader, bit32 extras, tagged pack/unpack.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="foot">
+        <div class="wrap">Stack · GitHub Pages docs</div>
+    </footer>
+    <script src="assets/site.js"></script>
 </body>
 </html>
